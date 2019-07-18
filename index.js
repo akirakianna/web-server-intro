@@ -27,6 +27,16 @@ app.get('/hello', function (req, res) {
   res.render('hello', {name: name});
 });
 
+app.get('/test', function (req, res) {
+  console.log(res.query);
+  res.send('OK');
+});
+
+app.post('/test', function (req, res) {
+  console.log(res.body);
+  res.send('OK');
+});
+
 app.get('/', function (req, res) {
   res.render('messages', {messages: state.messages});
 });
