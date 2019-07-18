@@ -1,8 +1,7 @@
 var express = require('express')
+var mustache = require('mustache-express');
 var bodyParser = require('body-parser');
-var port = 3000
 
-var app = express()
 
 var state = {
   messages: [{
@@ -12,36 +11,36 @@ var state = {
   }]
 };
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+var app = express()
+app.engine('html', mustache());
+app.set('view engine', 'html');
+app.set('views', __dirname + '/public/views');
+
 app.use(express.static('public'))
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.get('/hello', function (req, res) {
+  var name = req.query.name;
+  if (!name) {
+    name = "Unknown Person";
+  }
+  res.render('hello', {name: name});
+});
 
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/public/chatapp.html');
+  res.render('messages', {messages: state.messages});
 });
 
-app.get('/messages', function (req, res) {
-	var lastSeenId = req.query.lastSeenId;
-	var notSeen = [];
-	for (var i = 0; i < state.messages.length; i = i + 1) {
-		var m = state.messages[i];
-		if (m.id > lastSeenId) {
-			notSeen.push(m);
-		}
-	}
-  res.json(notSeen);
-});
-
-app.post('/messages', function (req, res) {
+app.post('/', function (req, res) {
 	var newMessage = {};
 	newMessage.username = req.body.username;
 	newMessage.text = req.body.text;
 	newMessage.id = state.messages.length;
 	state.messages.push(newMessage);
-	console.log('added new message', newMessage);
-  res.send('OK');
+  res.render('messages', {messages: state.messages});
 });
 
+var port = 3000
 app.listen(port, function () {
   console.log(`Example app listening on port ${port}!`);
 });

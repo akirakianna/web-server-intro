@@ -15,22 +15,23 @@
     <h1 class="title">Chatting!</h1>
 
     <ul id="chatlog">
+      {{#messages}}
+      <li>{{username}}: {{text}}</li>
+      {{/messages}}
     </ul>
     <br>
 
-    <form id="chatentry" name="chatentry">
+    <form action="/" method="post">
       <label for="username">Username</label> <input type="text" name="username"><br>
       <label for="text">Message</label> 
 
       <textarea rows="4" cols="50" name="text"></textarea><br>
-      <input id="sendbutton" type="submit" value="Submit">
+      <input type="submit" value="Submit">
     </form>
   </main>
 
   <footer>
     © 23 Code Street 2018.
   </footer>
-  <script src="js/ajax.js"></script> 
-  <script src="js/client.js"></script>
 </body>
 </html>
