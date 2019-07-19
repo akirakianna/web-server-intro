@@ -28,12 +28,12 @@ app.get('/hello', function (req, res) {
 });
 
 app.get('/test', function (req, res) {
-  console.log(res.query);
+  console.log(req.query);
   res.send('OK');
 });
 
 app.post('/test', function (req, res) {
-  console.log(res.body);
+  console.log(req.body);
   res.send('OK');
 });
 
